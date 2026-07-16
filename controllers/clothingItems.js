@@ -39,7 +39,10 @@ module.exports.createItem = (req, res) => {
 };
 
 module.exports.deleteItem = (req, res) => {
-  ClothingItem.findByIdAndDelete(req.params.itemId)
+  ClothingItem.findOneAndDelete({
+    _id: req.params.itemId,
+    owner: req.user._id,
+  })
     .orFail()
     .then((item) => res.send(item))
     .catch((err) => {
