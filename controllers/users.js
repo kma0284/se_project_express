@@ -82,24 +82,36 @@ module.exports.createUser = (req, res) => {
 };
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
-  console.log("LOGIN EMAIL:", email);
-  console.log("LOGIN PASSWORD:", password);
-  User.findUserByCredentials(email, password)
+
+  if (!email || !password) {
+    return res.status(BAD_REQUEST).send({
+      message: "Email and password are required",
+    });
+  }
+
+  return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
 
-      res.send({ token });
+      return res.send({ token });
     })
     .catch((err) => {
       console.error(err);
 
-      res.status(UNAUTHORIZED).send({
-        message: "Incorrect email or password",
+      if (err.message === "Incorrect email or password") {
+        return res.status(UNAUTHORIZED).send({
+          message: "Incorrect email or password",
+        });
+      }
+
+      return res.status(SERVER_ERROR).send({
+        message: "An error has occurred on the server",
       });
     });
 };
+
 module.exports.updateProfile = (req, res) => {
   const { name, avatar } = req.body;
 

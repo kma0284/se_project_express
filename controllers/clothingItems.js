@@ -39,12 +39,19 @@ module.exports.createItem = (req, res) => {
 };
 
 module.exports.deleteItem = (req, res) => {
-  ClothingItem.findOneAndDelete({
-    _id: req.params.itemId,
-    owner: req.user._id,
-  })
+  ClothingItem.findById(req.params.itemId)
     .orFail()
-    .then((item) => res.send(item))
+    .then((item) => {
+      if (item.owner.toString() !== req.user._id) {
+        return res.status(403).send({
+          message: "Forbidden",
+        });
+      }
+
+      return ClothingItem.findByIdAndDelete(req.params.itemId).then(
+        (deletedItem) => res.send(deletedItem)
+      );
+    })
     .catch((err) => {
       console.error(err);
 

@@ -13,10 +13,9 @@ const { NOT_FOUND } = require("../utils/errors");
 router.post("/signin", login);
 router.post("/signup", createUser);
 
-// Public GET /items
 router.use("/items", clothingItemsRouter);
 
-// Protect everything after this
+// Everything below requires authentication
 router.use(auth);
 
 router.use("/users", usersRouter);
