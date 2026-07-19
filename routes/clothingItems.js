@@ -1,5 +1,7 @@
 const router = require("express").Router();
 
+const auth = require("../middlewares/auth");
+
 const {
   getItems,
   createItem,
@@ -8,7 +10,11 @@ const {
   dislikeItem,
 } = require("../controllers/clothingItems");
 
+// Public
 router.get("/", getItems);
+
+// Everything below requires authorization
+router.use(auth);
 
 router.post("/", createItem);
 
