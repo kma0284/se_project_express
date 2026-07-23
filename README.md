@@ -34,5 +34,5 @@ The API provides routes for user authentication, clothing item creation, retriev
 
 Install dependencies:
 
-```bash
-npm install
+my project pitch video
+https://www.loom.com/share/ef3bbaa94ed04bec8d735477fc312c56
