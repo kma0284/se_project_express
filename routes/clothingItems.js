@@ -10,18 +10,16 @@ const {
   dislikeItem,
 } = require("../controllers/clothingItems");
 
-// Public
+const { validateCardBody, validateId } = require("../middlewares/validation");
+
 router.get("/", getItems);
 
-// Everything below requires authorization
-router.use(auth);
+router.post("/", auth, validateCardBody, createItem);
 
-router.post("/", createItem);
+router.delete("/:itemId", auth, validateId, deleteItem);
 
-router.delete("/:itemId", deleteItem);
+router.put("/:itemId/likes", auth, validateId, likeItem);
 
-router.put("/:itemId/likes", likeItem);
-
-router.delete("/:itemId/likes", dislikeItem);
+router.delete("/:itemId/likes", auth, validateId, dislikeItem);
 
 module.exports = router;
