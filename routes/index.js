@@ -16,9 +16,9 @@ router.post("/signin", validateLoginBody, login);
 
 router.post("/signup", validateUserBody, createUser);
 
-router.use(auth);
-
 router.use("/items", clothingItemsRouter);
+
+router.use(auth);
 
 router.use("/users", usersRouter);
 
