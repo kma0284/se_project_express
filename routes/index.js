@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const auth = require("../middlewares/auth");
+// const auth = require("../middlewares/auth");
 
 const {
   validateLoginBody,
@@ -18,7 +18,7 @@ router.post("/signup", validateUserBody, createUser);
 
 router.use("/items", clothingItemsRouter);
 
-router.use(auth);
+// router.use(auth);
 
 router.use("/users", usersRouter);
 
