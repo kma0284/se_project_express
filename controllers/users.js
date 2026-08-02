@@ -17,7 +17,12 @@ module.exports.getUsers = (req, res, next) => {
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail()
-    .then((user) => res.send({ data: user }))
+    .then((user) => {
+      const userObj = user.toObject();
+      delete userObj.password;
+
+      res.send(userObj);
+    })
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
         return next(new NotFoundError("User not found"));
@@ -29,7 +34,6 @@ module.exports.getCurrentUser = (req, res, next) => {
 
 module.exports.createUser = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
-  console.log(req.body);
   bcrypt
     .hash(password, 10)
     .then((hashedPassword) =>
