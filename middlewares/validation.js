@@ -46,8 +46,9 @@ module.exports.validateUserBody = celebrate({
       "string.email": 'The "email" field must be valid',
     }),
 
-    password: Joi.string().required().messages({
+    password: Joi.string().required().min(8).messages({
       "string.empty": 'The "password" field must be filled in',
+      "string.min": 'The "password" field must be at least 8 characters',
     }),
   }),
 });
@@ -79,9 +80,14 @@ module.exports.validateUserUpdate = celebrate({
   }),
 });
 
-module.exports.validateId = celebrate({
+module.exports.validateUserId = celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().hex().length(24),
-    itemId: Joi.string().hex().length(24),
+    userId: Joi.string().hex().length(24).required(),
+  }),
+});
+
+module.exports.validateItemId = celebrate({
+  params: Joi.object().keys({
+    itemId: Joi.string().hex().length(24).required(),
   }),
 });
