@@ -1,6 +1,6 @@
 const { SERVER_ERROR, BAD_REQUEST } = require("../utils/errors");
 
-module.exports = (err, req, res, next) => {
+module.exports = (err, req, res) => {
   console.error(err);
 
   // Celebrate validation errors

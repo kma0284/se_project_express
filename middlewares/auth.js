@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const { JWT_SECRET } = require("../utils/config");
-const { UNAUTHORIZED } = require("../utils/errors");
+const UnauthorizedError = require("../errors/unauthorized-error");
 
 module.exports = (req, res, next) => {
   // Allow CORS preflight requests through
@@ -13,9 +13,7 @@ module.exports = (req, res, next) => {
 
   // Check that authorization header exists
   if (!authorization || !authorization.startsWith("Bearer ")) {
-    return res.status(UNAUTHORIZED).send({
-      message: "Authorization required",
-    });
+    throw new UnauthorizedError("Authorization required");
   }
 
   // Remove "Bearer " from token
@@ -26,9 +24,7 @@ module.exports = (req, res, next) => {
   try {
     payload = jwt.verify(token, JWT_SECRET);
   } catch (err) {
-    return res.status(UNAUTHORIZED).send({
-      message: "Authorization required",
-    });
+    throw new UnauthorizedError("Authorization required");
   }
 
   // Attach user info to request
